@@ -6,64 +6,25 @@ import {
   Trash2,
   CircleCheckBig,
   CircleAlert,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { ConfirmDeleteModal } from "../common/ConfirmDeleteModal";
+import { Expense } from "../../types/types";
 
-const expensesData = [
-  {
-    id: 1,
-    date: "01/01/2023",
-    description: "Aluguel do escritório",
-    createdAt: "Registrado em 01/01/2023",
-    category: "Fixa",
-    value: 1200,
-    status: "Pago",
-  },
-  {
-    id: 2,
-    date: "02/01/2023",
-    description: "Conta de luz",
-    createdAt: "Registrado em 02/01/2023",
-    category: "Fixa",
-    value: 120,
-    status: "Pendente",
-  },
-  {
-    id: 3,
-    date: "03/01/2023",
-    description: "Internet",
-    createdAt: "Registrado em 03/01/2023",
-    category: "Fixa",
-    value: 100,
-    status: "Pendente",
-  },
-  {
-    id: 4,
-    date: "04/01/2023",
-    description: "Manutenção do ar-condicionado",
-    createdAt: "Registrado em 04/01/2023",
-    category: "Variavel",
-    value: 350,
-    status: "Pago",
-  },
-  {
-    id: 5,
-    date: "05/01/2023",
-    description: "Campanha de marketing",
-    createdAt: "Registrado em 05/01/2023",
-    category: "Variavel",
-    value: 1500,
-    status: "Pago",
-  },
-];
+interface ExpensesTableProps {
+  expenses: Expense[];
+}
 
-export const ExpensesTable = () => {
+export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("todos");
   const [filterStatus, setFilterStatus] = useState("todos");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Número de itens por página
 
   const applyFilters = () => {
-    let filtered = expensesData;
+    let filtered = expenses;
 
     if (filterCategory !== "todos") {
       filtered = filtered.filter(
@@ -89,17 +50,45 @@ export const ExpensesTable = () => {
 
   const handleSearch = (e: { target: { value: string } }) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1); // Resetar para a primeira página ao pesquisar
   };
 
   const handleFilterCategory = (e: { target: { value: string } }) => {
     setFilterCategory(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleFilterStatus = (e: { target: { value: string } }) => {
     setFilterStatus(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleItemsPerPageChange = (e: { target: { value: string } }) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
   };
 
   const filteredExpenses = applyFilters();
+
+  // calcular indices da paginacao
+  const totalItems = filteredExpenses.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentExpenses = filteredExpenses.slice(startIndex, endIndex);
+
+  // funcoes de paginacao
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <motion.div
@@ -109,7 +98,9 @@ export const ExpensesTable = () => {
       transition={{ delay: 0.2 }}
     >
       <div className="flex justify-between flex-col sm:flex-row items-center p-6 gap-7 mb-6">
-        <h2 className="text-xl font-semibold text-gray-100">Lista de Vendas</h2>
+        <h2 className="text-xl font-semibold text-gray-100">
+          Lista de despesas
+        </h2>
 
         <div className="flex gap-3 flex-col sm:flex-row">
           <div className="flex flex-col">
@@ -119,11 +110,10 @@ export const ExpensesTable = () => {
             >
               Filtrar por Status
             </label>
-
             <select
               id="filterStatus"
               className={`w-full sm:w-48 bg-gray-700 text-white rounded-md pl-3 py-1.5 sm:py-1 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ${
-                filterCategory !== "todos" ? "border-2 border-blue-500" : ""
+                filterStatus !== "todos" ? "border-2 border-blue-500" : ""
               }`}
               value={filterStatus}
               onChange={handleFilterStatus}
@@ -199,80 +189,147 @@ export const ExpensesTable = () => {
                 Status
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                Ações
+                Editar
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Excluir
               </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-700">
-            {filteredExpenses.map((item) => (
-              <motion.tr
-                key={item.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                  {item.date}
-                </td>
-
-                <td className="px-6 py-4 whitespace-nowrap text-md font-medium text-gray-100">
-                  <span className="items-center py-7">
-                    {item.description}
-                    <p className="text-xs text-gray-400">{item.createdAt}</p>
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm">
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm ${
-                      item.category === "Fixa"
-                        ? "text-cyan-400 bg-cyan-950"
-                        : "text-purple-300 bg-purple-950"
-                    }`}
-                  >
-                    {item.category}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                  {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(item.value)}
-                </td>
-
-                {item.status === "Pago" ? (
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-green-400">
-                    <span className="flex items-center gap-2 py-7">
-                      <CircleCheckBig size={18} />
-                      <p>{item.status}</p>
+            {currentExpenses.length > 0 ? (
+              currentExpenses.map((item) => (
+                <motion.tr
+                  key={item.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                    {new Intl.DateTimeFormat("pt-BR", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    }).format(new Date(item.date))}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-md font-medium text-gray-100">
+                    <span className="items-center py-7">
+                      {item.description}
+                      <p className="text-xs text-gray-400">{item.createdAt}</p>
                     </span>
                   </td>
-                ) : (
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-amber-400">
-                    <span className="flex items-center gap-2 py-7">
-                      <CircleAlert size={18} />
-                      <p>{item.status}</p>
+                  <td className="px-6 py-4 text-sm">
+                    <span
+                      className={`px-2 py-1 rounded-full text-sm ${
+                        item.category === "Fixa"
+                          ? "text-cyan-400 bg-cyan-950"
+                          : "text-violet-300 bg-violet-950"
+                      }`}
+                    >
+                      {item.category}
                     </span>
                   </td>
-                )}
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                  <button className="text-indigo-400 hover:text-indigo-300 mr-2 cursor-pointer">
-                    <Edit size={18} />
-                  </button>
-                  <ConfirmDeleteModal
-                    onConfirm={() => {}}
-                    title="Tem certeza que quer deletar?"
-                    text="Essa operação não pode ser desfeita"
-                  >
-                    <button className="text-red-400 hover:text-red-300 mr-2 cursor-pointer">
-                      <Trash2 size={18} />
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(item.value)}
+                  </td>
+                  {item.status === "Pago" ? (
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-400">
+                      <span className="flex items-center gap-2 py-7">
+                        <CircleCheckBig size={18} />
+                        <p>{item.status}</p>
+                      </span>
+                    </td>
+                  ) : (
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-amber-400">
+                      <span className="flex items-center gap-2 py-7">
+                        <CircleAlert size={18} />
+                        <p>{item.status}</p>
+                      </span>
+                    </td>
+                  )}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-center">
+                    <button className="text-indigo-400 hover:text-indigo-300 mr-2 cursor-pointer">
+                      <Edit size={18} />
                     </button>
-                  </ConfirmDeleteModal>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-center">
+                    <ConfirmDeleteModal
+                      onConfirm={() => {}}
+                      title="Tem certeza que quer deletar?"
+                      text="Essa operação não pode ser desfeita"
+                    >
+                      <button className="text-red-400 hover:text-red-300 mr-2 cursor-pointer">
+                        <Trash2 size={18} />
+                      </button>
+                    </ConfirmDeleteModal>
+                  </td>
+                </motion.tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="px-6 py-4 text-center text-gray-400">
+                  Nenhuma despesa encontrada.
                 </td>
-              </motion.tr>
-            ))}
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
+
+      {/* Controles de Paginação */}
+      {totalItems > 0 && (
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
+          <div className="flex items-center gap-2">
+            <label htmlFor="itemsPerPage" className="text-sm text-gray-300">
+              Itens por página:
+            </label>
+            <select
+              id="itemsPerPage"
+              className="bg-gray-700 text-white rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button
+              onClick={goToPreviousPage}
+              disabled={currentPage === 1}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm ${
+                currentPage === 1
+                  ? "bg-gray-600 text-gray-400 cursor-not-allowed"
+                  : "bg-gray-700 text-white hover:bg-gray-600"
+              }`}
+            >
+              <ChevronLeft size={18} />
+              Anterior
+            </button>
+            <span className="text-sm text-gray-300">
+              Página {currentPage} de {totalPages}
+            </span>
+            <button
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm ${
+                currentPage === totalPages
+                  ? "bg-gray-600 text-gray-400 cursor-not-allowed"
+                  : "bg-gray-700 text-white hover:bg-gray-600"
+              }`}
+            >
+              Próximo
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };

@@ -154,7 +154,10 @@ export const SalesTable = () => {
                 Valor Final
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                Ações
+                Editar
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Excluir
               </th>
             </tr>
           </thead>
@@ -203,11 +206,12 @@ export const SalesTable = () => {
                     currency: "BRL",
                   }).format(item.finalPrice)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-center">
                   <button className="text-indigo-400 hover:text-indigo-300 mr-2 cursor-pointer">
                     <Edit size={18} />
                   </button>
-
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-center">
                   <ConfirmDeleteModal
                     onConfirm={() => {}}
                     title="Tem certeza que quer deletar?"

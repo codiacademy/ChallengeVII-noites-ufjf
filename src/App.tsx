@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { OverviewPage } from "./pages/OverviewPage";
 import { Sidebar } from "./components/common/Sidebar";
-import { UsersPage } from "./pages/ExpensesPage";
+import { ExpensesPage } from "./pages/ExpensesPage";
 import { SalesPage } from "./pages/SalesPage";
 import { SettingsPage } from "./pages/SettingsPage";
 
@@ -19,7 +19,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<OverviewPage />} />
         <Route path="/sales" element={<SalesPage />} />
-        <Route path="/expenses" element={<UsersPage />} />
+        <Route path="/expenses" element={<ExpensesPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </div>

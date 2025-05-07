@@ -1,24 +1,50 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Header } from "../components/common/Header";
 import { StatCard } from "../components/common/StatCard";
-import { AlertTriangle, Banknote, Repeat, ShoppingCart } from "lucide-react";
+import {
+  AlertTriangle,
+  BanknoteArrowDown,
+  Repeat,
+  ShoppingCart,
+} from "lucide-react";
 import { ExpensesTable } from "../components/expenses/ExpensesTable";
 import { ExpensesGrowth } from "../components/expenses/ExpensesGrowth";
 import { ExpensesTypesBar } from "../components/expenses/ExpensesTypesBar";
 import { ButtonAdd } from "../components/common/ButtonAdd";
-import { PieExpensesChart } from "../components/overview/PieExpensesChart";
+import { expensesData } from "../data/ExpensesData";
+import { filterExpensesByTime } from "../utils/expenseAggregations";
+import { TimeRange } from "../types/types";
 
-export function UsersPage() {
+export function ExpensesPage() {
+  const [timeRange, setTimeRange] = useState<TimeRange>("all");
+
+  // filtrando os dados pelo time range
+  const filteredExpenses = filterExpensesByTime(expensesData, timeRange);
+
   const expensesStats = {
-    totalExpenses: 20845,
-    fixedExpenses: 243,
-    variableExpenses: 98520,
-    pendingExpenses: 109,
+    totalExpenses: filteredExpenses.reduce(
+      (sum, expense) => sum + expense.value,
+      0
+    ), // total de despesas
+    fixedExpenses: filteredExpenses
+      .filter((expense) => expense.category === "Fixa")
+      .reduce((sum, expense) => sum + expense.value, 0), // total de despesas fixas
+    variableExpenses: filteredExpenses
+      .filter((expense) => expense.category === "Variavel")
+      .reduce((sum, expense) => sum + expense.value, 0), // total de despesas variaveis
+    pendingExpenses: filteredExpenses
+      .filter((expense) => expense.status === "Pendente")
+      .reduce((sum, expense) => sum + expense.value, 0), // total de despesas pendentes
   };
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title="Despesas">
+      <Header
+        title="Despesas"
+        showTimeRange={true}
+        onTimeRangeChange={setTimeRange}
+      >
         <ButtonAdd titleButton="Adicionar Despesa" />
       </Header>
 
@@ -32,12 +58,12 @@ export function UsersPage() {
         >
           <StatCard
             name="Total de Despesas"
-            icon={Banknote}
+            icon={BanknoteArrowDown}
             value={new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",
             }).format(expensesStats.totalExpenses)}
-            color="#ef4444"
+            color="#eb1a1a"
           />
           <StatCard
             name="Despesas Fixas"
@@ -68,15 +94,13 @@ export function UsersPage() {
           />
         </motion.div>
 
-        <ExpensesTable />
+        <ExpensesTable expenses={filteredExpenses} />
 
-        {/* USER CHARTS */}
+        {/* GRAFICOS DE DESPESAS */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-8">
-          <ExpensesGrowth />
-          <ExpensesTypesBar />
+          <ExpensesGrowth timeRange={timeRange} />
+          <ExpensesTypesBar timeRange={timeRange} />
         </div>
-
-        <PieExpensesChart />
       </main>
     </div>
   );

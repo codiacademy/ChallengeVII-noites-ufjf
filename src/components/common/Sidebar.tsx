@@ -3,9 +3,9 @@ import {
   LucideProps,
   Menu,
   Settings,
-  ShoppingBag,
-  BanknoteX,
   LogOut,
+  BanknoteArrowDown,
+  BanknoteArrowUp,
 } from "lucide-react";
 import { ForwardRefExoticComponent, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -28,14 +28,14 @@ const MAIN_ITEMS: SidebarItem[] = [
   },
   {
     name: "Vendas",
-    icon: ShoppingBag,
-    color: "#8b5cf6",
+    icon: BanknoteArrowUp,
+    color: "#10b981",
     href: "/sales",
   },
   {
     name: "Despesas",
-    icon: BanknoteX,
-    color: "#ec4899",
+    icon: BanknoteArrowDown,
+    color: "#eb1a1a",
     href: "/expenses",
   },
 ];

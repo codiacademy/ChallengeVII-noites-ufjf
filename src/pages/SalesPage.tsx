@@ -33,7 +33,7 @@ export function SalesPage() {
             name="Média de vendas"
             icon={TrendingUp}
             value="R$12,345"
-            color="#10b981"
+            color="#ec4899"
           />
           <StatCard
             name="Valor Bruto"

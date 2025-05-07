@@ -2,16 +2,15 @@ import { Header } from "../components/common/Header";
 import { motion } from "framer-motion";
 import { StatCard } from "../components/common/StatCard";
 import {
-  ShoppingBag,
   BanknoteArrowDown,
   BanknoteArrowUp,
   PiggyBank,
+  TrendingUp,
 } from "lucide-react";
 import { SalesOverviewChart } from "../components/overview/SalesOverviewChart";
 import { PieCourseChart } from "../components/overview/PieCourseChart";
 import { BalanceLineChart } from "../components/overview/BalanceLineChart";
 import { BalanceBarChart } from "../components/overview/BalanceBarChart";
-import { PieExpensesChart } from "../components/overview/PieExpensesChart";
 
 export function OverviewPage() {
   return (
@@ -39,23 +38,25 @@ export function OverviewPage() {
             color="#eb1a1a"
           />
           <StatCard
-            name="Saldo líquido"
+            name="Balanço"
             icon={PiggyBank}
             value="R$ 1.234,56"
             color="#205bff"
           />
           <StatCard
             name="Média de vendas"
-            icon={ShoppingBag}
+            icon={TrendingUp}
             value="R$ 1.234,56"
             color="#ec4899"
           />
         </motion.div>
 
         {/* CHARTS */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <PieExpensesChart />
+        <div className="mb-8">
           <PieCourseChart />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <BalanceBarChart />
           <BalanceLineChart />
         </div>
