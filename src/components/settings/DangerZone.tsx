@@ -18,12 +18,12 @@ export const DangerZone = () => {
         Deletar sua conta significa que todos os seus dados serão perdidos permanentemente.
       </p>
       <ConfirmDeleteModal onConfirm={() => {}} title="Tem certeza que quer deletar sua conta? " text="Essa operação não pode ser desfeita">
-        <button
+        <span
           className="cursor-pointer bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded 
           transition duration-200"
         >
           Deletar Conta
-        </button>
+        </span>
       </ConfirmDeleteModal>
     </motion.div>
   );

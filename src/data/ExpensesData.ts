@@ -1,4 +1,4 @@
-import { Expense } from "../types/types";
+import { Expense } from "@/types/types";
 
 export const expensesData: Expense[] = [
   {
@@ -7,7 +7,7 @@ export const expensesData: Expense[] = [
     description: "Aluguel do escritório",
     createdAt: "Registrado em 01/01/2023",
     category: "Fixa",
-    value: 1200,
+    value: 800,
     status: "Pago",
   },
   {
@@ -25,7 +25,7 @@ export const expensesData: Expense[] = [
     description: "Internet",
     createdAt: "Registrado em 03/01/2023",
     category: "Fixa",
-    value: 100,
+    value: 90,
     status: "Pendente",
   },
   {
@@ -34,7 +34,7 @@ export const expensesData: Expense[] = [
     description: "Manutenção do ar-condicionado",
     createdAt: "Registrado em 04/01/2023",
     category: "Variavel",
-    value: 350,
+    value: 950,
     status: "Pago",
   },
   {
@@ -43,7 +43,7 @@ export const expensesData: Expense[] = [
     description: "Campanha de marketing",
     createdAt: "Registrado em 05/01/2023",
     category: "Variavel",
-    value: 1500,
+    value: 1100,
     status: "Pago",
   },
   {
@@ -52,16 +52,16 @@ export const expensesData: Expense[] = [
     description: "Aluguel do escritório",
     createdAt: "Registrado em 01/02/2023",
     category: "Fixa",
-    value: 1200,
+    value: 800,
     status: "Pago",
   },
   {
     id: 7,
     date: "2023-03-01",
     description: "Conta de luz",
-    createdAt: "Registrado em 02/01/2023",
+    createdAt: "Registrado em 02/03/2023",
     category: "Fixa",
-    value: 120,
+    value: 125,
     status: "Pendente",
   },
   {
@@ -70,7 +70,7 @@ export const expensesData: Expense[] = [
     description: "Internet",
     createdAt: "Registrado em 01/04/2023",
     category: "Fixa",
-    value: 100,
+    value: 95,
     status: "Pendente",
   },
   {
@@ -79,7 +79,7 @@ export const expensesData: Expense[] = [
     description: "Manutenção do ar-condicionado",
     createdAt: "Registrado em 01/05/2023",
     category: "Variavel",
-    value: 350,
+    value: 850,
     status: "Pago",
   },
   {
@@ -88,7 +88,7 @@ export const expensesData: Expense[] = [
     description: "Campanha de marketing",
     createdAt: "Registrado em 01/01/2024",
     category: "Variavel",
-    value: 1500,
+    value: 1000,
     status: "Pago",
   },
   {
@@ -97,14 +97,14 @@ export const expensesData: Expense[] = [
     description: "Aluguel do escritório",
     createdAt: "Registrado em 01/02/2024",
     category: "Fixa",
-    value: 1200,
+    value: 800,
     status: "Pago",
   },
   {
     id: 12,
     date: "2024-03-01",
     description: "Conta de luz",
-    createdAt: "Registrado em 02/01/2024",
+    createdAt: "Registrado em 01/03/2024",
     category: "Fixa",
     value: 120,
     status: "Pendente",
@@ -115,7 +115,7 @@ export const expensesData: Expense[] = [
     description: "Internet",
     createdAt: "Registrado em 01/04/2024",
     category: "Fixa",
-    value: 100,
+    value: 95,
     status: "Pendente",
   },
   {
@@ -124,7 +124,7 @@ export const expensesData: Expense[] = [
     description: "Manutenção do ar-condicionado",
     createdAt: "Registrado em 01/05/2024",
     category: "Variavel",
-    value: 350,
+    value: 950,
     status: "Pago",
   },
   {
@@ -133,7 +133,7 @@ export const expensesData: Expense[] = [
     description: "Campanha de marketing",
     createdAt: "Registrado em 01/06/2024",
     category: "Variavel",
-    value: 1500,
+    value: 1100,
     status: "Pago",
   },
   {
@@ -142,7 +142,7 @@ export const expensesData: Expense[] = [
     description: "Aluguel do escritório",
     createdAt: "Registrado em 01/07/2024",
     category: "Fixa",
-    value: 1200,
+    value: 820,
     status: "Pago",
   },
   {
@@ -151,7 +151,7 @@ export const expensesData: Expense[] = [
     description: "Conta de luz",
     createdAt: "Registrado em 01/08/2024",
     category: "Fixa",
-    value: 135,
+    value: 130,
     status: "Pendente",
   },
   {
@@ -160,7 +160,7 @@ export const expensesData: Expense[] = [
     description: "Internet",
     createdAt: "Registrado em 01/09/2024",
     category: "Fixa",
-    value: 105,
+    value: 100,
     status: "Pago",
   },
   {
@@ -169,7 +169,7 @@ export const expensesData: Expense[] = [
     description: "Reparo elétrico",
     createdAt: "Registrado em 01/10/2024",
     category: "Variavel",
-    value: 400,
+    value: 800,
     status: "Pendente",
   },
   {
@@ -178,7 +178,7 @@ export const expensesData: Expense[] = [
     description: "Campanha de Black Friday",
     createdAt: "Registrado em 01/11/2024",
     category: "Variavel",
-    value: 1800,
+    value: 1150,
     status: "Pago",
   },
   {
@@ -187,7 +187,7 @@ export const expensesData: Expense[] = [
     description: "Aluguel do escritório",
     createdAt: "Registrado em 01/12/2024",
     category: "Fixa",
-    value: 1200,
+    value: 800,
     status: "Pago",
   },
   {
@@ -205,7 +205,7 @@ export const expensesData: Expense[] = [
     description: "Internet",
     createdAt: "Registrado em 01/02/2025",
     category: "Fixa",
-    value: 110,
+    value: 100,
     status: "Pago",
   },
   {
@@ -214,7 +214,7 @@ export const expensesData: Expense[] = [
     description: "Reparos de móveis",
     createdAt: "Registrado em 01/03/2025",
     category: "Variavel",
-    value: 275,
+    value: 500,
     status: "Pendente",
   },
   {
@@ -223,7 +223,7 @@ export const expensesData: Expense[] = [
     description: "Campanha de Páscoa",
     createdAt: "Registrado em 01/04/2025",
     category: "Variavel",
-    value: 1600,
+    value: 950,
     status: "Pago",
   },
   {
@@ -232,7 +232,7 @@ export const expensesData: Expense[] = [
     description: "Aluguel do escritório",
     createdAt: "Registrado em 01/05/2025",
     category: "Fixa",
-    value: 1250,
+    value: 820,
     status: "Pago",
   },
   {
@@ -241,7 +241,7 @@ export const expensesData: Expense[] = [
     description: "Compra de materiais de escritório",
     createdAt: "Registrado em 03/06/2025",
     category: "Variavel",
-    value: 260,
+    value: 400,
     status: "Pago",
   },
   {
@@ -250,7 +250,7 @@ export const expensesData: Expense[] = [
     description: "Conta de telefone",
     createdAt: "Registrado em 15/06/2025",
     category: "Fixa",
-    value: 90,
+    value: 95,
     status: "Pendente",
   },
   {
@@ -259,7 +259,7 @@ export const expensesData: Expense[] = [
     description: "Serviço de limpeza",
     createdAt: "Registrado em 10/07/2025",
     category: "Variavel",
-    value: 300,
+    value: 350,
     status: "Pago",
   },
   {
@@ -268,7 +268,7 @@ export const expensesData: Expense[] = [
     description: "Assinatura de software (licença anual)",
     createdAt: "Registrado em 22/07/2025",
     category: "Fixa",
-    value: 899,
+    value: 600,
     status: "Pago",
   },
   {
@@ -277,7 +277,7 @@ export const expensesData: Expense[] = [
     description: "Viagem a trabalho (passagens)",
     createdAt: "Registrado em 05/08/2025",
     category: "Variavel",
-    value: 1400,
+    value: 1000,
     status: "Pendente",
   },
   {
@@ -286,7 +286,7 @@ export const expensesData: Expense[] = [
     description: "Hospedagem para evento",
     createdAt: "Registrado em 19/08/2025",
     category: "Variavel",
-    value: 780,
+    value: 700,
     status: "Pago",
   },
   {
@@ -295,7 +295,7 @@ export const expensesData: Expense[] = [
     description: "Manutenção de computadores",
     createdAt: "Registrado em 07/09/2025",
     category: "Variavel",
-    value: 550,
+    value: 600,
     status: "Pendente",
   },
   {
@@ -313,7 +313,7 @@ export const expensesData: Expense[] = [
     description: "Curso de capacitação online",
     createdAt: "Registrado em 02/10/2025",
     category: "Variavel",
-    value: 320,
+    value: 350,
     status: "Pago",
   },
   {
@@ -322,7 +322,7 @@ export const expensesData: Expense[] = [
     description: "Seguro dos equipamentos",
     createdAt: "Registrado em 18/10/2025",
     category: "Fixa",
-    value: 700,
+    value: 650,
     status: "Pendente",
   },
   {
@@ -331,7 +331,7 @@ export const expensesData: Expense[] = [
     description: "Evento corporativo",
     createdAt: "Registrado em 11/11/2025",
     category: "Variavel",
-    value: 2000,
+    value: 1200,
     status: "Pago",
   },
   {
@@ -340,7 +340,7 @@ export const expensesData: Expense[] = [
     description: "Conta de água",
     createdAt: "Registrado em 27/11/2025",
     category: "Fixa",
-    value: 95,
+    value: 100,
     status: "Pendente",
   },
   {
@@ -349,7 +349,7 @@ export const expensesData: Expense[] = [
     description: "Campanha de fim de ano",
     createdAt: "Registrado em 04/12/2025",
     category: "Variavel",
-    value: 2100,
+    value: 1150,
     status: "Pago",
   },
   {
@@ -358,7 +358,7 @@ export const expensesData: Expense[] = [
     description: "13º salário da equipe",
     createdAt: "Registrado em 20/12/2025",
     category: "Fixa",
-    value: 9500,
+    value: 1200,
     status: "Pago",
   },
 ];

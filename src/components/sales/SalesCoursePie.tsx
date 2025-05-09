@@ -18,7 +18,7 @@ const categoryData = [
 
 const COLORS = ["#6366f1", "#8b5cf6", "#ec4899", "#10b981", "#f59e0b"];
 
-export const PieCourseChart = () => {
+export const SalesCoursePie = () => {
   return (
     <motion.div
       className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"

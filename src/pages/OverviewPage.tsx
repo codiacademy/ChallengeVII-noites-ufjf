@@ -8,7 +8,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { SalesOverviewChart } from "../components/overview/SalesOverviewChart";
-import { PieCourseChart } from "../components/overview/PieCourseChart";
+import { SalesCoursePie } from "../components/sales/SalesCoursePie";
 import { BalanceLineChart } from "../components/overview/BalanceLineChart";
 import { BalanceBarChart } from "../components/overview/BalanceBarChart";
 
@@ -53,7 +53,7 @@ export function OverviewPage() {
 
         {/* CHARTS */}
         <div className="mb-8">
-          <PieCourseChart />
+          <SalesCoursePie />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

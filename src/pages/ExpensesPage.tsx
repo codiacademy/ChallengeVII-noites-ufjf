@@ -15,6 +15,7 @@ import { ButtonAdd } from "../components/common/ButtonAdd";
 import { expensesData } from "../data/ExpensesData";
 import { filterExpensesByTime } from "../utils/expenseAggregations";
 import { TimeRange } from "../types/types";
+import { ExpensesTypesPie } from "@/components/expenses/ExpensesTypesPie";
 
 export function ExpensesPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>("all");
@@ -101,6 +102,8 @@ export function ExpensesPage() {
           <ExpensesGrowth timeRange={timeRange} />
           <ExpensesTypesBar timeRange={timeRange} />
         </div>
+
+        <ExpensesTypesPie timeRange={timeRange} />
       </main>
     </div>
   );

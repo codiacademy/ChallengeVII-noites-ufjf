@@ -261,9 +261,9 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
                       title="Tem certeza que quer deletar?"
                       text="Essa operação não pode ser desfeita"
                     >
-                      <button className="text-red-400 hover:text-red-300 mr-2 cursor-pointer">
+                      <span className="text-red-400 hover:text-red-300 mr-2 cursor-pointer">
                         <Trash2 size={18} />
-                      </button>
+                      </span>
                     </ConfirmDeleteModal>
                   </td>
                 </motion.tr>
@@ -305,8 +305,8 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
               disabled={currentPage === 1}
               className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm ${
                 currentPage === 1
-                  ? "bg-gray-600 text-gray-400 cursor-not-allowed"
-                  : "bg-gray-700 text-white hover:bg-gray-600"
+                  ? "sm:bg-gray-600 text-gray-400 cursor-not-allowed"
+                  : "sm:bg-gray-700 text-white hover:bg-gray-600"
               }`}
             >
               <ChevronLeft size={18} />
@@ -320,8 +320,8 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
               disabled={currentPage === totalPages}
               className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm ${
                 currentPage === totalPages
-                  ? "bg-gray-600 text-gray-400 cursor-not-allowed"
-                  : "bg-gray-700 text-white hover:bg-gray-600"
+                  ? "sm:bg-gray-600 text-gray-400 cursor-not-allowed"
+                  : "sm:bg-gray-700 text-white hover:bg-gray-600"
               }`}
             >
               Próximo

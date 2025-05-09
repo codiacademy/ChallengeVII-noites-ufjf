@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { StatCard } from "../components/common/StatCard";
 import { DollarSign, Package, TrendingUp, HandCoins } from "lucide-react";
 import { SalesTable } from "../components/sales/SalesTable";
-import { PieCourseChart } from "../components/overview/PieCourseChart";
+import { SalesCoursePie } from "../components/sales/SalesCoursePie";
 import { SalesTrendChart } from "../components/sales/SalesTrendChart";
 import { ButtonAdd } from "../components/common/ButtonAdd";
 import { SalesTypesBar } from "../components/sales/SalesTypesBar";
@@ -56,7 +56,7 @@ export function SalesPage() {
           <SalesTrendChart />
           <SalesTypesBar />
         </div>
-        <PieCourseChart />
+        <SalesCoursePie />
       </main>
     </div>
   );

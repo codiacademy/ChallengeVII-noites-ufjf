@@ -84,7 +84,7 @@ export const getExpensesGrowthData = (
         "Dez",
       ];
       return {
-        month: `${monthNames[parseInt(month) - 1]} ${year.slice(-2)}`, // Adiciona o ano ao mês
+        month: `${monthNames[parseInt(month) - 1]} ${year}`, // Adiciona o ano ao mês ex: "Jan 2023"
         totalExpenses,
       };
     })
