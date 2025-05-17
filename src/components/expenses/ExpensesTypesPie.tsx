@@ -22,7 +22,7 @@ export const ExpensesTypesPie = ({ timeRange }: ExpensesTypesPieProps) => {
     { name: "variaveis", value: expensePieData[0]?.variaveis || 0 },
   ].filter((item) => item.value > 0);
 
-  const COLORS = ["#ec4899", "#8b5cf6"];
+  const COLORS = ["#0a90a1", "#793fff"];
   const nameMap = {
     fixas: "Despesas Fixas",
     variaveis: "Despesas Variáveis",
@@ -88,7 +88,7 @@ export const ExpensesTypesPie = ({ timeRange }: ExpensesTypesPieProps) => {
                   nameMap[value as keyof typeof nameMap]
                 }
                 wrapperStyle={{ color: "#E5E7EB" }}
-                iconType="rect"
+                iconType="circle"
               />
             </PieChart>
           </ResponsiveContainer>

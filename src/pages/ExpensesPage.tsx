@@ -99,11 +99,11 @@ export function ExpensesPage() {
 
         {/* GRAFICOS DE DESPESAS */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-8">
-          <ExpensesGrowth timeRange={timeRange} />
+          <ExpensesTypesPie timeRange={timeRange} />
           <ExpensesTypesBar timeRange={timeRange} />
         </div>
 
-        <ExpensesTypesPie timeRange={timeRange} />
+        <ExpensesGrowth timeRange={timeRange} />
       </main>
     </div>
   );

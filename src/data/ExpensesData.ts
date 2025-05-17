@@ -3,7 +3,7 @@ import { Expense } from "@/types/types";
 export const expensesData: Expense[] = [
   {
     id: 1,
-    date: "2023-01-01",
+    date: "2023-01-01", //
     description: "Aluguel do escritório",
     createdAt: "Registrado em 01/01/2023",
     category: "Fixa",

@@ -22,11 +22,11 @@ import {
 const chartConfig = {
   fixas: {
     label: "Despesas Fixas",
-    color: "#ec4899",
+    color: "#0a90a1",
   },
   variaveis: {
     label: "Despesas Variáveis",
-    color: "#8b5cf6",
+    color: "#793fff",
   },
 } satisfies ChartConfig;
 
@@ -36,6 +36,10 @@ interface ExpensesTypesBarProps {
 
 export function ExpensesTypesBar({ timeRange }: ExpensesTypesBarProps) {
   const expenseBarData = getExpensesTypesData(expensesData, timeRange);
+
+  const hasData =
+    expenseBarData.length > 0 &&
+    (expenseBarData[0].fixas > 0 || expenseBarData[0].variaveis > 0);
 
   return (
     <motion.div
@@ -50,59 +54,63 @@ export function ExpensesTypesBar({ timeRange }: ExpensesTypesBarProps) {
             Tipos de Despesas
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-full">
-          <ResponsiveContainer width="100%" height={300}>
-            <ChartContainer config={chartConfig} className="h-full w-full">
-              <BarChart data={expenseBarData}>
-                <CartesianGrid vertical={false} />
-                <YAxis
-                  style={{ fontSize: "16px" }}
-                  stroke="#9CA3AF"
-                  
-                />
-                <XAxis
-                  dataKey="date"
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                  tickFormatter={(value) => value || ""}
-                />
-                <ChartTooltip
-                  cursor={false}
-                  contentStyle={{
-                    fontSize: "16px",
-                    backgroundColor: "rgba(31, 41, 55, 0.9)",
-                    borderRadius: "4px",
-                    border: "1px solid #4B5563",
-                    padding: "8px",
-                    color: "#E5E7EB",
-                  }}
-                  itemStyle={{ color: "#E5E7EB" }}
-                  formatter={(value: number, name: string) => [
-                    new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(value),
-                    name === "fixas" ? "Despesas Fixas" : "Despesas Variáveis",
-                  ]}
-                />
-                <Bar dataKey="fixas" fill="var(--color-fixas)" radius={8} />
-                <Bar
-                  dataKey="variaveis"
-                  fill="var(--color-variaveis)"
-                  radius={8}
-                />
-                <Legend
-                  
-                  formatter={(name: string) =>
-                    name === "fixas" ? "Despesas Fixas" : "Despesas Variáveis"
-                  }
-                  wrapperStyle={{ fontSize: "16px", color: "#E5E7EB" }}
-                />
-              </BarChart>
-            </ChartContainer>
-          </ResponsiveContainer>
-        </CardContent>
+
+        {hasData ? (
+          <CardContent className="h-full">
+            <ResponsiveContainer width="100%" height={300}>
+              <ChartContainer config={chartConfig} className="h-full w-full">
+                <BarChart data={expenseBarData}>
+                  <CartesianGrid vertical={false} />
+                  <YAxis style={{ fontSize: "16px" }} stroke="#9CA3AF" />
+                  <XAxis
+                    dataKey="date"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                    tickFormatter={(value) => value || ""}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    contentStyle={{
+                      fontSize: "16px",
+                      backgroundColor: "rgba(31, 41, 55, 0.9)",
+                      borderRadius: "4px",
+                      border: "1px solid #4B5563",
+                      padding: "8px",
+                      color: "#E5E7EB",
+                    }}
+                    itemStyle={{ color: "#E5E7EB" }}
+                    formatter={(value: number, name: string) => [
+                      new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(value),
+                      name === "fixas"
+                        ? "Despesas Fixas"
+                        : "Despesas Variáveis",
+                    ]}
+                  />
+                  <Bar dataKey="fixas" fill="var(--color-fixas)" radius={8} />
+                  <Bar
+                    dataKey="variaveis"
+                    fill="var(--color-variaveis)"
+                    radius={8}
+                  />
+                  <Legend
+                    formatter={(name: string) =>
+                      name === "fixas" ? "Despesas Fixas" : "Despesas Variáveis"
+                    }
+                    wrapperStyle={{ fontSize: "16px", color: "#E5E7EB" }}
+                  />
+                </BarChart>
+              </ChartContainer>
+            </ResponsiveContainer>
+          </CardContent>
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-400">
+            Nenhuma venda encontrada para o período selecionado.
+          </div>
+        )}
       </Card>
     </motion.div>
   );
