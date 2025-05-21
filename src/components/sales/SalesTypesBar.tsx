@@ -37,7 +37,7 @@ const chartConfig = {
 export const SalesTypesBar = ({ timeRange }: SalesTypesBarProps) => {
   const salesBarData = getSalesTypesData(salesData, timeRange);
 
-  // Verificar se existem dados reais (presencial e online ambos zero significa "sem dados")
+  // Verificar se há dados reais (presencial e online ambos zero significa "sem dados")
   const hasData =
     salesBarData.length > 0 &&
     (salesBarData[0].presencial > 0 || salesBarData[0].online > 0);
@@ -57,7 +57,7 @@ export const SalesTypesBar = ({ timeRange }: SalesTypesBarProps) => {
         </CardHeader>
 
         {hasData ? (
-          <CardContent className="h-full">
+          <CardContent className="h-full flex justify-center items-center">
             <ResponsiveContainer width="100%" height={300}>
               <ChartContainer config={chartConfig} className="h-full w-full">
                 <BarChart data={salesBarData}>
