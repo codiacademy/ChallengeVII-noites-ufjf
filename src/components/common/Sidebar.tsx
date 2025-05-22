@@ -21,10 +21,10 @@ interface SidebarItem {
 
 const MAIN_ITEMS: SidebarItem[] = [
   {
-    name: "Dashboard Principal",
+    name: "Dashboard",
     icon: BarChart2,
     color: "#6366f1",
-    href: "/",
+    href: "/overview",
   },
   {
     name: "Vendas",
