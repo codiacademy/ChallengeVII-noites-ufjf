@@ -40,7 +40,7 @@ export function ExpensesPage() {
   };
 
   return (
-    <div className="flex-1 overflow-auto relative z-10">
+    <div className="flex-1 relative z-10">
       <Header
         title="Despesas"
         showTimeRange={true}
@@ -49,7 +49,7 @@ export function ExpensesPage() {
         <ButtonAdd titleButton="Adicionar Despesa" />
       </Header>
 
-      <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+      <main className="h-screen overflow-auto py-4 px-4">
         {/* STATS */}
         <motion.div
           className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
