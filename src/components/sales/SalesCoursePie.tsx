@@ -33,7 +33,6 @@ export const SalesCoursePie = ({ timeRange }: SalesCoursePieProps) => {
 
   const salesPieData = getSalesCoursesData(salesData, timeRange);
 
-  // Ordenar os dados e pegar os 5 primeiros
   const sortedData = [...salesPieData].sort((a, b) => b.value - a.value);
   const topFive = sortedData.slice(0, 5);
   const othersTotal = sortedData

@@ -9,17 +9,16 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { TimeRange } from "@/types/types";
+import { salesData } from "@/data/SalesData";
+import { expensesData } from "@/data/ExpensesData";
+import { getBalanceDataGrowth } from "@/utils/balanceAggregations";
+interface BalanceLineChartProps {
+  timeRange: TimeRange;
+}
 
-export const BalanceLineChart = () => {
-  const revenueData = [
-    { month: "Jan", receitas: 4000, despesas: 3800 },
-    { month: "Fev", receitas: 3000, despesas: 3200 },
-    { month: "Mar", receitas: 5000, despesas: 4500 },
-    { month: "Abr", receitas: 4500, despesas: 4200 },
-    { month: "Mai", receitas: 6000, despesas: 5500 },
-    { month: "Jun", receitas: 5500, despesas: 5800 },
-    { month: "Jul", receitas: 7000, despesas: 6500 },
-  ];
+export const BalanceLineChart = ({ timeRange }: BalanceLineChartProps) => {
+  const revenueData = getBalanceDataGrowth(salesData, expensesData, timeRange);
 
   return (
     <motion.div
@@ -34,36 +33,55 @@ export const BalanceLineChart = () => {
         </h2>
       </div>
 
-      <div style={{ width: "100%", height: 500 }}>
-        <ResponsiveContainer>
-          <AreaChart data={revenueData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey="month" stroke="#9CA3AF" />
-            <YAxis stroke="#9CA3AF" />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "rgba(31, 41, 55, 0.8)",
-                borderColor: "#4B5563",
-              }}
-              itemStyle={{ color: "#E5E7EB" }}
-            />
-            <Legend />
-            <Area
-              type="monotone"
-              dataKey="receitas"
-              stroke="#10B981"
-              fill="#10B981"
-              fillOpacity={0.3}
-            />
-            <Area
-              type="monotone"
-              dataKey="despesas"
-              stroke="#c42121"
-              fill="#c42121"
-              fillOpacity={0.3}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+      <div className="h-[320px] sm:h-[400px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 scrollbar-rounded">
+        {revenueData.length > 0 ? (
+          <div className="h-full min-w-[600px] w-full">
+            <ResponsiveContainer>
+              <AreaChart data={revenueData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis
+                  dataKey="month"
+                  stroke="#9CA3AF"
+                  tick={{ fontSize: 11 }}
+                />
+                <YAxis stroke="#9CA3AF" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(31, 41, 55, 0.8)",
+                    borderColor: "#4B5563",
+                  }}
+                  itemStyle={{ color: "#E5E7EB" }}
+                  formatter={(value) =>
+                    new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(value as number)
+                  }
+                />
+
+                <Area
+                  type="monotone"
+                  dataKey="receitas"
+                  stroke="#10B981"
+                  fill="#10B981"
+                  fillOpacity={0.3}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="despesas"
+                  stroke="#c42121"
+                  fill="#c42121"
+                  fillOpacity={0.3}
+                />
+                <Legend />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-400">
+            Nenhuma informação encontrada para o período selecionado.
+          </div>
+        )}
       </div>
     </motion.div>
   );

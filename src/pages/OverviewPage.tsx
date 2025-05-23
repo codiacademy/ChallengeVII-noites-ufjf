@@ -7,15 +7,49 @@ import {
   PiggyBank,
   TrendingUp,
 } from "lucide-react";
-import { SalesOverviewChart } from "../components/overview/SalesOverviewChart";
+
 import { SalesCoursePie } from "../components/sales/SalesCoursePie";
 import { BalanceLineChart } from "../components/overview/BalanceLineChart";
 import { BalanceBarChart } from "../components/overview/BalanceBarChart";
+import { SalesGrowth } from "@/components/sales/SalesGrowth";
+import { useState } from "react";
+import { TimeRange } from "@/types/types";
+
+import { salesData } from "@/data/SalesData";
+import { expensesData } from "@/data/ExpensesData";
+
+import { filterSalesByTime } from "@/utils/salesAggregations";
+import { filterExpensesByTime } from "@/utils/expenseAggregations";
 
 export function OverviewPage() {
+  const [timeRange, setTimeRange] = useState<TimeRange>("all");
+
+  const filteredExpenses = filterExpensesByTime(expensesData, timeRange);
+  const filteredSales = filterSalesByTime(salesData, timeRange);
+
+  const balanceStats = {
+    totalExpenses: filteredExpenses.reduce(
+      (sum, expense) => sum + expense.value,
+      0
+    ), // total de despesas
+    totalSales: filteredSales.reduce((sum, sale) => sum + sale.finalPrice, 0), // total de vendas
+    balance:
+      filteredSales.reduce((sum, sale) => sum + sale.finalPrice, 0) -
+      filteredExpenses.reduce((sum, expense) => sum + expense.value, 0), // saldo
+    avarageSales:
+      filteredSales.length > 0
+        ? filteredSales.reduce((sum, sale) => sum + sale.finalPrice, 0) /
+          filteredSales.length
+        : 0, // média de vendas
+  };
+
   return (
     <div className="flex-1 relative z-10">
-      <Header title="Dashboard" />
+      <Header
+        title="Dashboard"
+        showTimeRange={true}
+        onTimeRangeChange={setTimeRange}
+      />
 
       <main className="h-screen overflow-auto py-4 px-4">
         {/* STATS */}
@@ -28,41 +62,53 @@ export function OverviewPage() {
           <StatCard
             name="Total de vendas"
             icon={BanknoteArrowUp}
-            value="R$12,345"
+            value={new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(balanceStats.totalSales)}
             color="#10b981"
           />
           <StatCard
             name="Total de despesas"
             icon={BanknoteArrowDown}
-            value="R$1,234"
+            value={new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(balanceStats.totalExpenses)}
             color="#eb1a1a"
           />
           <StatCard
             name="Balanço"
             icon={PiggyBank}
-            value="R$ 1.234,56"
+            value={new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(balanceStats.balance)}
             color="#205bff"
           />
           <StatCard
             name="Média de vendas"
             icon={TrendingUp}
-            value="R$ 1.234,56"
+            value={new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(balanceStats.avarageSales)}
             color="#ec4899"
           />
         </motion.div>
 
         {/* CHARTS */}
         <div className="mb-8">
-          <SalesCoursePie />
+          <SalesCoursePie timeRange={timeRange} />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <BalanceBarChart />
-          <BalanceLineChart />
+        <div className="grid grid-cols-1 lg:grid-cols-2 sm:gap-8">
+          <BalanceBarChart timeRange={timeRange} />
+          <BalanceLineChart timeRange={timeRange} />
         </div>
 
-        <div className="mt-6 flex flex-col gap-6">
-          <SalesOverviewChart />
+        <div className="flex flex-col gap-6">
+          <SalesGrowth timeRange={timeRange} />
         </div>
       </main>
     </div>

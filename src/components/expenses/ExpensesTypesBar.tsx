@@ -56,7 +56,7 @@ export function ExpensesTypesBar({ timeRange }: ExpensesTypesBarProps) {
         </CardHeader>
 
         {hasData ? (
-          <CardContent className="h-full">
+          <CardContent className="h-full flex justify-center items-center">
             <ResponsiveContainer width="100%" height={300}>
               <ChartContainer config={chartConfig} className="h-full w-full">
                 <BarChart data={expenseBarData}>
@@ -108,7 +108,7 @@ export function ExpensesTypesBar({ timeRange }: ExpensesTypesBarProps) {
           </CardContent>
         ) : (
           <div className="flex items-center justify-center h-full text-gray-400">
-            Nenhuma venda encontrada para o período selecionado.
+            Nenhuma despesa encontrada para o período selecionado.
           </div>
         )}
       </Card>
