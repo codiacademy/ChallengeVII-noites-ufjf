@@ -11,8 +11,8 @@ export const TimeRangeSelect = ({
   onTimeRangeChange,
 }: TimeRangeSelectProps) => {
   return (
-    <div className="relative w-full sm:w-auto">
-      <Calendar className="absolute left-3 top-4 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+    <div className="relative w-full sm:w-auto justify-center items-center">
+      <Calendar className="absolute left-3 top-4 sm:top-5 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
       <select
         className="w-full sm:w-48 sm:h-10 bg-gray-700 text-white rounded-md pl-10 pr-3 py-1.5 sm:py-1 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
         value={selectedTimeRange}

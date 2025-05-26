@@ -24,7 +24,7 @@ const MAIN_ITEMS: SidebarItem[] = [
     name: "Dashboard",
     icon: BarChart2,
     color: "#6366f1",
-    href: "/overview",
+    href: "/",
   },
   {
     name: "Vendas",
@@ -51,7 +51,7 @@ const BOTTOM_ITEMS: SidebarItem[] = [
     name: "Sair",
     icon: LogOut,
     color: "#fff",
-    href: "/",
+    href: "/login",
   },
 ];
 

@@ -25,7 +25,7 @@ export const Header = ({
   };
 
   return (
-    <header className="bg-gray-800 shadow-lg/40 shadow-gray-600/50 text-white p-4 sm:p-6 relative z-10">
+    <header className="bg-gray-800 shadow-lg/20 shadow-gray-600/50 text-white p-4 sm:p-6 relative z-10">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 max-w-7xl mx-auto">
         <h1 className="text-xl sm:text-2xl font-bold truncate">{title}</h1>
 

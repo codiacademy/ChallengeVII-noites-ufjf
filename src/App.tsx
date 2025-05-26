@@ -6,7 +6,6 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { LoginPage } from "./pages/LoginPage";
 import SidebarLayout from "./components/common/SidebarLayout";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { Sidebar } from "./components/common/Sidebar";
 
 export function App() {
   return (
@@ -28,12 +27,12 @@ export function App() {
 
       <Routes>
         <Route element={<SidebarLayout />}>
-            <Route path="/overview" element={<OverviewPage />} />
+            <Route path="/" element={<OverviewPage />} />
             <Route path="/sales" element={<SalesPage />} />
             <Route path="/expenses" element={<ExpensesPage />} />
             <Route path="/settings" element={<SettingsPage />} />
         </Route>
-        <Route path="/" element={<LoginPage />}/>
+        <Route path="/login" element={<LoginPage />}/>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       
