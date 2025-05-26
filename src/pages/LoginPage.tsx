@@ -1,6 +1,7 @@
 import { Checkbox } from "@/components/common/CheckBoxLoginRegister";
 import { Input } from "@/components/common/InputLoginRegister";
 import { useNavigate } from "react-router-dom";
+import { userData } from "@/data/UserData";
 
 export function LoginPage() {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ export function LoginPage() {
         const doc = formData.get("txtDoc")
         const pass = formData.get("txtPass")
     
-        if (doc == '1234' && pass == "123") {
+        if (doc == userData.doc && pass == userData.password) {
             navigate("/")
         }else{
             alert("Documento ou senha incorretos")
