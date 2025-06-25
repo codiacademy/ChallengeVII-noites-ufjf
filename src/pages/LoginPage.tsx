@@ -3,6 +3,7 @@ import { Input } from "@/components/common/InputLoginRegister";
 import { useNavigate } from "react-router-dom";
 import { userData } from "@/data/UserData";
 
+
 export function LoginPage() {
     const navigate = useNavigate();
 

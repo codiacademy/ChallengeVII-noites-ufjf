@@ -11,10 +11,11 @@ import { useState } from "react";
 import { TimeRange } from "@/types/types";
 import { filterSalesByTime } from "@/utils/salesAggregations";
 import { salesData } from "@/data/SalesData";
+import Modal from "../components/common/Modal";
 
 export function SalesPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>("all");
-
+  const [isOpen, setIsOpen] = useState(false);
   // filtrando os dados pelo time range
   const filteredSales = filterSalesByTime(salesData, timeRange);
 
@@ -30,67 +31,72 @@ export function SalesPage() {
   };
 
   return (
-    <div className="flex-1 relative z-10">
-      <Header
-        title="Vendas"
-        showTimeRange={true}
-        onTimeRangeChange={setTimeRange}
-      >
-        <ButtonAdd titleButton="Adicionar Venda" />
-      </Header>
-
-      <main className="h-screen overflow-auto py-4 px-4">
-        {/* STATS */}
-        <motion.div
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+    <div>
+      <div className="flex-1 relative z-10">
+        <Header
+          title="Vendas"
+          showTimeRange={true}
+          onTimeRangeChange={setTimeRange}
         >
-          <StatCard
-            name="Total de cursos vendidos"
-            icon={Package}
-            value={salesStats.totalCourses.toString()}
-            color="#6366f1"
-          />
-          <StatCard
-            name="Média de vendas"
-            icon={TrendingUp}
-            value={new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(salesStats.avarageSales)}
-            color="#ec4899"
-          />
-          <StatCard
-            name="Valor Bruto"
-            icon={DollarSign}
-            value={new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(salesStats.grossValue)}
-            color="#f59e0b"
-          />
-          <StatCard
-            name="Valor Líquido"
-            icon={HandCoins}
-            value={new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(salesStats.netValue)}
-            color="#8b5cf6"
-          />
-        </motion.div>
+          <ButtonAdd titleButton="Adicionar Venda" onClick={() => setIsOpen(true)} />
+        </Header>
 
-        <SalesTable sales={filteredSales} />
+        <main className="h-screen overflow-auto py-4 px-4">
+          {/* STATS */}
+          <motion.div
+            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <StatCard
+              name="Total de cursos vendidos"
+              icon={Package}
+              value={salesStats.totalCourses.toString()}
+              color="#6366f1"
+            />
+            <StatCard
+              name="Média de vendas"
+              icon={TrendingUp}
+              value={new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(salesStats.avarageSales)}
+              color="#ec4899"
+            />
+            <StatCard
+              name="Valor Bruto"
+              icon={DollarSign}
+              value={new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(salesStats.grossValue)}
+              color="#f59e0b"
+            />
+            <StatCard
+              name="Valor Líquido"
+              icon={HandCoins}
+              value={new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(salesStats.netValue)}
+              color="#8b5cf6"
+            />
+          </motion.div>
 
-        {/* CHARTS */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <SalesCoursePie timeRange={timeRange} />
-          <SalesTypesBar timeRange={timeRange} />
-        </div>
-        <SalesGrowth timeRange={timeRange} />
-      </main>
+          <SalesTable sales={filteredSales} />
+
+          {/* CHARTS */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <SalesCoursePie timeRange={timeRange} />
+            <SalesTypesBar timeRange={timeRange} />
+          </div>
+          <SalesGrowth timeRange={timeRange} />
+        </main>
+      </div>
+
+      {/* Renderize o Modal fora da div acima */}
+      <Modal open={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }
