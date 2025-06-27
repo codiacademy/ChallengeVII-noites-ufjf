@@ -149,7 +149,7 @@ export const SalesCoursePie = ({ timeRange }: SalesCoursePieProps) => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="overflow-x-auto"
+            className="overflow-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 scrollbar-rounded"
           >
             <table className="min-w-full divide-y divide-gray-700">
               <thead>

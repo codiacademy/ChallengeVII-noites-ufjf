@@ -7,22 +7,15 @@ import { Security } from "../components/settings/Security";
 
 export function SettingsPage(){
   return (
-    <div className="relative z-10 bg-gray-900">
+    <div className="flex-1 overflow-auto relative z-10 bg-gray-900">
       <Header title="Settings" showTimeRange={false} />
 
-      <main className="h-screen overflow-auto py-4 px-4">
+      <main className="max-w-4xl mx-auto py-6 px-4 lg:px-8">
         <Profile />
         <Notifications />
         <Security />
         <DangerZone />
       </main>
-
-      {/* <main className="max-w-4xl mx-auto py-6 px-4 lg:px-8">
-        <Profile />
-        <Notifications />
-        <Security />
-        <DangerZone />
-      </main> */}
     </div>
   );
 };

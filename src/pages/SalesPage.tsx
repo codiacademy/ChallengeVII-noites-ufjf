@@ -11,7 +11,7 @@ import { useState } from "react";
 import { TimeRange } from "@/types/types";
 import { filterSalesByTime } from "@/utils/salesAggregations";
 import { salesData } from "@/data/SalesData";
-import Modal from "../components/common/Modal";
+import Modal from "@/components/sales/Modal";
 
 export function SalesPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>("all");

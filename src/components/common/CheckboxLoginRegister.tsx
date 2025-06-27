@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface CheckBoxProps {
-    titleChecked: string;
+  titleChecked: string;
 }
 
-export const Checkbox = ({ titleChecked}: CheckBoxProps) => {
+export const CheckboxLoginRegister = ({ titleChecked }: CheckBoxProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = (event: any) => {
@@ -13,7 +13,7 @@ export const Checkbox = ({ titleChecked}: CheckBoxProps) => {
 
   return (
     <div>
-      <label className='flex items-center text-[10px] gap-1'>
+      <label className="flex items-center text-sm gap-2">
         <input
           type="checkbox"
           checked={isChecked}
@@ -23,4 +23,4 @@ export const Checkbox = ({ titleChecked}: CheckBoxProps) => {
       </label>
     </div>
   );
-}
+};

@@ -3,16 +3,7 @@
 **Período do Challenge:** 29/04/2025 a 11/07/2025  
 **Projeto:** Sistema "Codi Cash"  
 **Objetivo:** Criar a interface (Front-end) completa e funcional de um software de gestão financeira voltado para as unidades da Codi Academy, considerando responsividade, usabilidade e integração futura com APIs.
----
-## Pré-requisitos
-- Node.js instalado na máquina
-- npm instalado na máquina
-- Git instalado na máquina
 
-## Iniciar o projeto
-- Rodar o terminal dentro do diretório raiz
-- Executar o comando `npm install` para instalar as dependências do projeto
-- Executar o comando `npm run dev` para rodar o projeto
 ---
 
 ## 1. Descrição Geral do Projeto

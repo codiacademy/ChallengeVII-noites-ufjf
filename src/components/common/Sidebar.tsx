@@ -21,7 +21,7 @@ interface SidebarItem {
 
 const MAIN_ITEMS: SidebarItem[] = [
   {
-    name: "Dashboard",
+    name: "Dashboard Principal",
     icon: BarChart2,
     color: "#6366f1",
     href: "/",
@@ -51,7 +51,7 @@ const BOTTOM_ITEMS: SidebarItem[] = [
     name: "Sair",
     icon: LogOut,
     color: "#fff",
-    href: "/login",
+    href: "/signin",
   },
 ];
 
