@@ -2,6 +2,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Sales, CourseName } from "@/types/types";
+import { useEffect } from "react";
 
 const SaleSchema = Yup.object().shape({
   customer: Yup.object().shape({
@@ -107,6 +108,25 @@ export default function Modal({
       onClose();
     },
   });
+
+  useEffect(() => {
+    const calculatedFinalPrice =
+      formik.values.course.price -
+      formik.values.discount -
+      formik.values.taxes -
+      formik.values.commissions -
+      formik.values.cardFees;
+    formik.setFieldValue(
+      "finalPrice",
+      calculatedFinalPrice >= 0 ? calculatedFinalPrice : 0
+    );
+  }, [
+    formik.values.course.price,
+    formik.values.discount,
+    formik.values.taxes,
+    formik.values.commissions,
+    formik.values.cardFees,
+  ]);
 
   return (
     <Dialog open={open} onClose={onClose} className="relative z-10">
@@ -407,6 +427,7 @@ export default function Modal({
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.finalPrice}
+                          disabled
                         />
                         {formik.touched.finalPrice &&
                         formik.errors.finalPrice ? (
