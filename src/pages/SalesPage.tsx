@@ -8,26 +8,45 @@ import { SalesGrowth } from "../components/sales/SalesGrowth";
 import { ButtonAdd } from "../components/common/ButtonAdd";
 import { SalesTypesBar } from "../components/sales/SalesTypesBar";
 import { useState } from "react";
-import { TimeRange } from "@/types/types";
+import { TimeRange, Sales } from "@/types/types";
 import { filterSalesByTime } from "@/utils/salesAggregations";
 import { salesData } from "@/data/SalesData";
-import Modal from "@/components/sales/Modal";
+import Modal from "@/components/common/SalesModal";
 
 export function SalesPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>("all");
   const [isOpen, setIsOpen] = useState(false);
-  // filtrando os dados pelo time range
-  const filteredSales = filterSalesByTime(salesData, timeRange);
+  const [sales, setSales] = useState<Sales[]>(salesData); // Estado para gerenciar vendas
+  const [selectedSale, setSelectedSale] = useState<Sales | null>(null); // Venda selecionada para edição
+
+  // Função para salvar (criar ou atualizar) uma venda
+  const handleSaveSale = (newSale: Sales) => {
+    if (newSale.id === selectedSale?.id) {
+      // Atualizar venda existente
+      setSales(sales.map((sale) => (sale.id === newSale.id ? newSale : sale)));
+    } else {
+      // Adicionar nova venda
+      setSales([...sales, newSale]);
+    }
+  };
+
+  // Função para excluir uma venda
+  const handleDeleteSale = (id: number) => {
+    setSales(sales.filter((sale) => sale.id !== id));
+  };
+
+  // Filtrando os dados pelo time range
+  const filteredSales = filterSalesByTime(sales, timeRange);
 
   const salesStats = {
-    totalCourses: filteredSales.length, // total de cursos
+    totalCourses: filteredSales.length,
     avarageSales:
       filteredSales.length > 0
         ? filteredSales.reduce((sum, sale) => sum + sale.finalPrice, 0) /
           filteredSales.length
         : 0,
-    grossValue: filteredSales.reduce((sum, sale) => sum + sale.course.price, 0), // valor bruto
-    netValue: filteredSales.reduce((sum, sale) => sum + sale.finalPrice, 0), // valor líquido
+    grossValue: filteredSales.reduce((sum, sale) => sum + sale.course.price, 0),
+    netValue: filteredSales.reduce((sum, sale) => sum + sale.finalPrice, 0),
   };
 
   return (
@@ -38,7 +57,13 @@ export function SalesPage() {
           showTimeRange={true}
           onTimeRangeChange={setTimeRange}
         >
-          <ButtonAdd titleButton="Adicionar Venda" onClick={() => setIsOpen(true)} />
+          <ButtonAdd
+            titleButton="Adicionar Venda"
+            onClick={() => {
+              setIsOpen(true);
+              setSelectedSale(null); // Limpa a venda selecionada para criar uma nova
+            }}
+          />
         </Header>
 
         <main className="h-screen overflow-auto py-4 px-4">
@@ -84,7 +109,14 @@ export function SalesPage() {
             />
           </motion.div>
 
-          <SalesTable sales={filteredSales} />
+          <SalesTable
+            sales={filteredSales}
+            onEdit={(sale) => {
+              setSelectedSale(sale); // Define a venda selecionada para edição
+              setIsOpen(true); // Abre o modal
+            }}
+            onDelete={handleDeleteSale} // Passa a função de exclusão
+          />
 
           {/* CHARTS */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -96,7 +128,16 @@ export function SalesPage() {
       </div>
 
       {/* Renderize o Modal fora da div acima */}
-      <Modal open={isOpen} onClose={() => setIsOpen(false)} />
+      <Modal
+        title={selectedSale ? "Editar Venda" : "Cadastro de Vendas"}
+        open={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+          setSelectedSale(null); // Limpa a venda selecionada ao fechar
+        }}
+        onSave={handleSaveSale} // Passa a função de salvamento
+        sale={selectedSale} // Passa a venda selecionada para edição
+      />
     </div>
   );
 }

@@ -11,12 +11,9 @@ import {
 import { ConfirmDeleteModal } from "../common/ConfirmDeleteModal";
 import { Sales } from "@/types/types";
 import { SaleDetailsModal } from "./SaleDatailsModal";
+import { SalesTableProps } from "@/types/types";
 
-interface SalesTableProps {
-  sales: Sales[];
-}
-
-export const SalesTable = ({ sales }: SalesTableProps) => {
+export const SalesTable = ({ sales, onEdit, onDelete }: SalesTableProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("todos");
   const [currentPage, setCurrentPage] = useState(1);
@@ -236,13 +233,16 @@ export const SalesTable = ({ sales }: SalesTableProps) => {
                     </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-center">
-                    <button className="text-indigo-400 hover:text-indigo-300 mr-2 cursor-pointer">
+                    <button
+                      onClick={() => onEdit(item)}
+                      className="text-indigo-400 hover:text-indigo-300 mr-2 cursor-pointer"
+                    >
                       <Edit size={18} />
                     </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-center">
                     <ConfirmDeleteModal
-                      onConfirm={() => {}}
+                      onConfirm={() => onDelete(item.id)}
                       title="Tem certeza que quer deletar?"
                       text="Essa operação não pode ser desfeita"
                     >

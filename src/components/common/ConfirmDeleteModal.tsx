@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 
 interface ConfirmDeleteModalProps {
   children: React.ReactNode;
-  onConfirm: () => void; // opcional enquanto ainda nao tem uma funcao para deletar
+  onConfirm: () => void;
   title?: string;
   text?: string;
 }

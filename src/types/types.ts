@@ -46,9 +46,16 @@ export interface Sales {
   finalPrice: number;
 }
 
+export interface SalesTableProps {
+  sales: Sales[];
+  onDelete: (id: number) => void;
+  onEdit: (sale: Sales) => void;
+}
+
 export type TimeRange =
   | "lastWeek"
   | "thisMonth"
   | "lastThreeMonths"
   | "thisYear"
   | "all";
+
