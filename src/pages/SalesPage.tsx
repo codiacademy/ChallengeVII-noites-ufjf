@@ -50,84 +50,81 @@ export function SalesPage() {
   };
 
   return (
-    <div>
-      <div className="flex-1 relative z-10">
-        <Header
-          title="Vendas"
-          showTimeRange={true}
-          onTimeRangeChange={setTimeRange}
+    <div className="flex-1 overflow-auto relative z-10">
+      <Header
+        title="Vendas"
+        showTimeRange={true}
+        onTimeRangeChange={setTimeRange}
+      >
+        <ButtonAdd
+          titleButton="Adicionar Venda"
+          onClick={() => {
+            setIsOpen(true);
+            setSelectedSale(null); // Limpa a venda selecionada para criar uma nova
+          }}
+        />
+      </Header>
+
+      <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+        {/* STATS */}
+        <motion.div
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
         >
-          <ButtonAdd
-            titleButton="Adicionar Venda"
-            onClick={() => {
-              setIsOpen(true);
-              setSelectedSale(null); // Limpa a venda selecionada para criar uma nova
-            }}
+          <StatCard
+            name="Total de cursos vendidos"
+            icon={Package}
+            value={salesStats.totalCourses.toString()}
+            color="#6366f1"
           />
-        </Header>
-
-        <main className="h-screen overflow-auto py-4 px-4">
-          {/* STATS */}
-          <motion.div
-            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <StatCard
-              name="Total de cursos vendidos"
-              icon={Package}
-              value={salesStats.totalCourses.toString()}
-              color="#6366f1"
-            />
-            <StatCard
-              name="Média de vendas"
-              icon={TrendingUp}
-              value={new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(salesStats.avarageSales)}
-              color="#ec4899"
-            />
-            <StatCard
-              name="Valor Bruto"
-              icon={DollarSign}
-              value={new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(salesStats.grossValue)}
-              color="#f59e0b"
-            />
-            <StatCard
-              name="Valor Líquido"
-              icon={HandCoins}
-              value={new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(salesStats.netValue)}
-              color="#8b5cf6"
-            />
-          </motion.div>
-
-          <SalesTable
-            sales={filteredSales}
-            onEdit={(sale) => {
-              setSelectedSale(sale); // Define a venda selecionada para edição
-              setIsOpen(true); // Abre o modal
-            }}
-            onDelete={handleDeleteSale} // Passa a função de exclusão
+          <StatCard
+            name="Média de vendas"
+            icon={TrendingUp}
+            value={new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(salesStats.avarageSales)}
+            color="#ec4899"
           />
+          <StatCard
+            name="Valor Bruto"
+            icon={DollarSign}
+            value={new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(salesStats.grossValue)}
+            color="#f59e0b"
+          />
+          <StatCard
+            name="Valor Líquido"
+            icon={HandCoins}
+            value={new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(salesStats.netValue)}
+            color="#8b5cf6"
+          />
+        </motion.div>
 
-          {/* CHARTS */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <SalesCoursePie timeRange={timeRange} />
-            <SalesTypesBar timeRange={timeRange} />
-          </div>
-          <SalesGrowth timeRange={timeRange} />
-        </main>
-      </div>
+        <SalesTable
+          sales={filteredSales}
+          onEdit={(sale) => {
+            setSelectedSale(sale); // Define a venda selecionada para edição
+            setIsOpen(true); // Abre o modal
+          }}
+          onDelete={handleDeleteSale} // Passa a função de exclusão
+        />
 
-      {/* Renderize o Modal fora da div acima */}
+        {/* CHARTS */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <SalesCoursePie timeRange={timeRange} />
+          <SalesTypesBar timeRange={timeRange} />
+        </div>
+        <SalesGrowth timeRange={timeRange} />
+      </main>
+
       <Modal
         title={selectedSale ? "Editar Venda" : "Cadastro de Vendas"}
         open={isOpen}

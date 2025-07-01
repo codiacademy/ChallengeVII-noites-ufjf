@@ -61,7 +61,7 @@ export default function ExpensesModal({
   });
 
   return (
-    <Dialog open={open} onClose={onClose} className="relative z-10">
+    <Dialog open={open} onClose={onClose} className="relative z-30">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-700/75 transition-opacity data-closed:opacity-0 data-enter:duration-1000 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
