@@ -10,18 +10,24 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { ConfirmDeleteModal } from "../common/ConfirmDeleteModal";
-import { Expense } from "../../types/types";
+import { Expense } from "@/types/types";
 
 interface ExpensesTableProps {
   expenses: Expense[];
+  onEdit: (expense: Expense) => void;
+  onDelete: (id: number) => void;
 }
 
-export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
+export const ExpensesTable = ({
+  expenses,
+  onEdit,
+  onDelete,
+}: ExpensesTableProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("todos");
   const [filterStatus, setFilterStatus] = useState("todos");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5); // Número de itens por página
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const applyFilters = () => {
     let filtered = expenses;
@@ -50,7 +56,7 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
 
   const handleSearch = (e: { target: { value: string } }) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Resetar para a primeira página ao pesquisar
+    setCurrentPage(1);
   };
 
   const handleFilterCategory = (e: { target: { value: string } }) => {
@@ -70,14 +76,12 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
 
   const filteredExpenses = applyFilters();
 
-  // calcular indices da paginacao
   const totalItems = filteredExpenses.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentExpenses = filteredExpenses.slice(startIndex, endIndex);
 
-  // funcoes de paginacao
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -99,7 +103,7 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
     >
       <div className="flex justify-between flex-col sm:flex-row items-center p-6 gap-7 mb-6">
         <h2 className="text-xl font-semibold text-gray-100">
-          Lista de despesas
+          Lista de Despesas
         </h2>
 
         <div className="flex gap-3 flex-col sm:flex-row">
@@ -142,8 +146,8 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
               aria-label="Filtrar por categoria de despesa"
             >
               <option value="todos">Todas as categorias</option>
-              <option value="variavel">Variável</option>
               <option value="fixa">Fixa</option>
+              <option value="variavel">Variável</option>
             </select>
           </div>
 
@@ -215,7 +219,14 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
                   <td className="px-6 py-4 whitespace-nowrap text-md font-medium text-gray-100">
                     <span className="items-center py-7">
                       {item.description}
-                      <p className="text-xs text-gray-400">{item.createdAt}</p>
+                      <p className="text-xs text-gray-400">
+                        Registrado em{" "}
+                        {new Intl.DateTimeFormat("pt-BR", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        }).format(new Date(item.createdAt))}
+                      </p>
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm">
@@ -251,13 +262,16 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
                     </td>
                   )}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-center">
-                    <button className="text-indigo-400 hover:text-indigo-300 mr-2 cursor-pointer">
+                    <button
+                      onClick={() => onEdit(item)}
+                      className="text-indigo-400 hover:text-indigo-300 mr-2 cursor-pointer"
+                    >
                       <Edit size={18} />
                     </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-center">
                     <ConfirmDeleteModal
-                      onConfirm={() => {}}
+                      onConfirm={() => onDelete(item.id)}
                       title="Tem certeza que quer deletar?"
                       text="Essa operação não pode ser desfeita"
                     >
@@ -270,7 +284,7 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
               ))
             ) : (
               <tr>
-                <td colSpan={6} className="px-6 py-4 text-center text-gray-400">
+                <td colSpan={7} className="px-6 py-4 text-center text-gray-400">
                   Nenhuma despesa encontrada.
                 </td>
               </tr>
@@ -279,7 +293,6 @@ export const ExpensesTable = ({ expenses }: ExpensesTableProps) => {
         </table>
       </div>
 
-      {/* Controles de Paginação */}
       {totalItems > 0 && (
         <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
           <div className="flex items-center gap-2">

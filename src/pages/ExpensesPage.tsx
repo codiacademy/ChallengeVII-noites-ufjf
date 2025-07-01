@@ -14,29 +14,49 @@ import { ExpensesTypesBar } from "../components/expenses/ExpensesTypesBar";
 import { ButtonAdd } from "../components/common/ButtonAdd";
 import { expensesData } from "../data/ExpensesData";
 import { filterExpensesByTime } from "../utils/expenseAggregations";
-import { TimeRange } from "../types/types";
+import { TimeRange, Expense } from "../types/types";
 import { ExpensesTypesPie } from "@/components/expenses/ExpensesTypesPie";
+import ExpensesModal from "@/components/common/ExpensesModal";
 
 export function ExpensesPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>("all");
+  const [isModalOpen, setModalIsOpen] = useState(false);
+  const [expenses, setExpenses] = useState<Expense[]>(expensesData);
+  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
 
-  // filtrando os dados pelo time range
-  const filteredExpenses = filterExpensesByTime(expensesData, timeRange);
+  const handleSaveExpense = (newExpense: Expense) => {
+    if (newExpense.id === selectedExpense?.id) {
+      setExpenses(
+        expenses.map((expense) =>
+          expense.id === newExpense.id ? newExpense : expense
+        )
+      );
+    } else {
+      setExpenses([...expenses, newExpense]);
+    }
+  };
+
+  const handleDeleteExpense = (id: number) => {
+    setExpenses(expenses.filter((expense) => expense.id !== id));
+  };
+
+  // Filtrando os dados pelo time range usando o estado expenses
+  const filteredExpenses = filterExpensesByTime(expenses, timeRange);
 
   const expensesStats = {
     totalExpenses: filteredExpenses.reduce(
       (sum, expense) => sum + expense.value,
       0
-    ), // total de despesas
+    ),
     fixedExpenses: filteredExpenses
       .filter((expense) => expense.category === "Fixa")
-      .reduce((sum, expense) => sum + expense.value, 0), // total de despesas fixas
+      .reduce((sum, expense) => sum + expense.value, 0),
     variableExpenses: filteredExpenses
       .filter((expense) => expense.category === "Variavel")
-      .reduce((sum, expense) => sum + expense.value, 0), // total de despesas variaveis
+      .reduce((sum, expense) => sum + expense.value, 0),
     pendingExpenses: filteredExpenses
       .filter((expense) => expense.status === "Pendente")
-      .reduce((sum, expense) => sum + expense.value, 0), // total de despesas pendentes
+      .reduce((sum, expense) => sum + expense.value, 0),
   };
 
   return (
@@ -46,7 +66,13 @@ export function ExpensesPage() {
         showTimeRange={true}
         onTimeRangeChange={setTimeRange}
       >
-        <ButtonAdd titleButton="Adicionar Despesa" />
+        <ButtonAdd
+          onClick={() => {
+            setModalIsOpen(true);
+            setSelectedExpense(null);
+          }}
+          titleButton="Adicionar Despesa"
+        />
       </Header>
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
@@ -95,7 +121,14 @@ export function ExpensesPage() {
           />
         </motion.div>
 
-        <ExpensesTable expenses={filteredExpenses} />
+        <ExpensesTable
+          expenses={filteredExpenses}
+          onEdit={(expense) => {
+            setSelectedExpense(expense);
+            setModalIsOpen(true);
+          }}
+          onDelete={handleDeleteExpense}
+        />
 
         {/* GRAFICOS DE DESPESAS */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-8">
@@ -105,6 +138,17 @@ export function ExpensesPage() {
 
         <ExpensesGrowth timeRange={timeRange} />
       </main>
+
+      <ExpensesModal
+        title={selectedExpense ? "Editar Despesa" : "Cadastrar Despesa"}
+        open={isModalOpen}
+        onClose={() => {
+          setModalIsOpen(false);
+          setSelectedExpense(null);
+        }}
+        onSave={handleSaveExpense}
+        expense={selectedExpense}
+      />
     </div>
   );
 }
