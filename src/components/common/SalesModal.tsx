@@ -3,6 +3,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Sales, CourseName } from "@/types/types";
 import { useEffect } from "react";
+import { setMask, removeMask } from "react-input-mask-br";
+import { isValidCPF } from "@/utils/isValidCPF";
+import { NumericFormat } from "react-number-format";
 
 const SaleSchema = Yup.object().shape({
   customer: Yup.object().shape({
@@ -13,17 +16,14 @@ const SaleSchema = Yup.object().shape({
       .email("E-mail inválido")
       .required("E-mail é obrigatório"),
     phone: Yup.string()
-      .matches(
-        /^\(\d{2}\)\s\d{4,5}-\d{4}$/,
-        "Telefone inválido (ex: (11) 99999-9999)"
-      )
+      .matches(/^\d{11}$/, "Telefone inválido (ex: (11) 9 9999-9999)")
       .required("Telefone é obrigatório"),
     cpf: Yup.string()
-      .matches(
-        /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
-        "CPF inválido (ex: 123.456.789-10)"
-      )
-      .required("CPF é obrigatório"),
+      .required("CPF é obrigatório")
+      .test("cpf-valido", "CPF inválido", (value) => {
+        const cleaned = value?.replace(/[^\d]+/g, "") || "";
+        return isValidCPF(cleaned);
+      }),
   }),
   course: Yup.object().shape({
     type: Yup.string()
@@ -109,6 +109,11 @@ export default function Modal({
     },
   });
 
+  const handleCurrencyChange =
+    (field: string) => (values: { floatValue?: number }) => {
+      formik.setFieldValue(field, values.floatValue || 0);
+    };
+
   useEffect(() => {
     const calculatedFinalPrice =
       formik.values.course.price -
@@ -158,6 +163,7 @@ export default function Modal({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.customer.name}
+                        placeholder="Nome completo do aluno..."
                       />
                       {formik.touched.customer?.name &&
                       formik.errors.customer?.name ? (
@@ -176,9 +182,18 @@ export default function Modal({
                         name="customer.cpf"
                         type="text"
                         className="w-full rounded border border-white bg-black p-2 text-white"
-                        onChange={formik.handleChange}
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            "customer.cpf",
+                            removeMask(e.target.value)
+                          )
+                        }
                         onBlur={formik.handleBlur}
-                        value={formik.values.customer.cpf}
+                        value={setMask({
+                          type: "cpf",
+                          value: formik.values.customer.cpf,
+                        })}
+                        placeholder="123.456.789-10"
                       />
                       {formik.touched.customer?.cpf &&
                       formik.errors.customer?.cpf ? (
@@ -197,9 +212,18 @@ export default function Modal({
                         name="customer.phone"
                         type="text"
                         className="w-full rounded border border-white bg-black p-2 text-white"
-                        onChange={formik.handleChange}
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            "customer.phone",
+                            removeMask(e.target.value)
+                          )
+                        }
                         onBlur={formik.handleBlur}
-                        value={formik.values.customer.phone}
+                        value={setMask({
+                          type: "phone",
+                          value: formik.values.customer.phone,
+                        })}
+                        placeholder="(99) 9 9999-9999"
                       />
                       {formik.touched.customer?.phone &&
                       formik.errors.customer?.phone ? (
@@ -220,6 +244,7 @@ export default function Modal({
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.customer.email}
+                          placeholder="seuemail@exemplo.com"
                         />
                         {formik.touched.customer?.email &&
                         formik.errors.customer?.email ? (
@@ -316,14 +341,20 @@ export default function Modal({
                         <label className="text-sm text-[12px] text-white">
                           Valor do curso
                         </label>
-                        <input
+                        <NumericFormat
                           id="course.price"
                           name="course.price"
-                          type="number"
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          prefix="R$ "
+                          decimalScale={2}
+                          fixedDecimalScale
+                          allowNegative={false}
                           className="w-full rounded border border-white bg-black p-2 text-white"
-                          onChange={formik.handleChange}
+                          onValueChange={handleCurrencyChange("course.price")}
                           onBlur={formik.handleBlur}
                           value={formik.values.course.price}
+                          placeholder="R$ 0,00"
                         />
                         {formik.touched.course?.price &&
                         formik.errors.course?.price ? (
@@ -336,14 +367,20 @@ export default function Modal({
                         <label className="text-center text-[12px] text-white">
                           Descontos aplicados
                         </label>
-                        <input
+                        <NumericFormat
                           id="discount"
                           name="discount"
-                          type="number"
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          prefix="R$ "
+                          decimalScale={2}
+                          fixedDecimalScale
+                          allowNegative={false}
                           className="w-full rounded border border-white bg-black p-2 text-white"
-                          onChange={formik.handleChange}
+                          onValueChange={handleCurrencyChange("discount")}
                           onBlur={formik.handleBlur}
                           value={formik.values.discount}
+                          placeholder="R$ 0,00"
                         />
                         {formik.touched.discount && formik.errors.discount ? (
                           <div className="text-red-500 text-xs">
@@ -358,14 +395,20 @@ export default function Modal({
                         <label className="text-[12px] text-white">
                           Impostos
                         </label>
-                        <input
+                        <NumericFormat
                           id="taxes"
                           name="taxes"
-                          type="number"
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          prefix="R$ "
+                          decimalScale={2}
+                          fixedDecimalScale
+                          allowNegative={false}
                           className="w-full rounded border border-white bg-black p-2 text-white"
-                          onChange={formik.handleChange}
+                          onValueChange={handleCurrencyChange("taxes")}
                           onBlur={formik.handleBlur}
                           value={formik.values.taxes}
+                          placeholder="R$ 0,00"
                         />
                         {formik.touched.taxes && formik.errors.taxes ? (
                           <div className="text-red-500 text-xs">
@@ -377,14 +420,20 @@ export default function Modal({
                         <label className="text-[12px] text-white">
                           Comissões
                         </label>
-                        <input
+                        <NumericFormat
                           id="commissions"
                           name="commissions"
-                          type="number"
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          prefix="R$ "
+                          decimalScale={2}
+                          fixedDecimalScale
+                          allowNegative={false}
                           className="w-full rounded border border-white bg-black p-2 text-white"
-                          onChange={formik.handleChange}
+                          onValueChange={handleCurrencyChange("commissions")}
                           onBlur={formik.handleBlur}
                           value={formik.values.commissions}
+                          placeholder="R$ 0,00"
                         />
                         {formik.touched.commissions &&
                         formik.errors.commissions ? (
@@ -400,14 +449,20 @@ export default function Modal({
                         <label className="text-[12px] text-white">
                           Taxa do cartão
                         </label>
-                        <input
+                        <NumericFormat
                           id="cardFees"
                           name="cardFees"
-                          type="number"
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          prefix="R$ "
+                          decimalScale={2}
+                          fixedDecimalScale
+                          allowNegative={false}
                           className="w-full rounded border border-white bg-black p-2 text-white"
-                          onChange={formik.handleChange}
+                          onValueChange={handleCurrencyChange("cardFees")}
                           onBlur={formik.handleBlur}
                           value={formik.values.cardFees}
+                          placeholder="R$ 0,00"
                         />
                         {formik.touched.cardFees && formik.errors.cardFees ? (
                           <div className="text-red-500 text-xs">
@@ -419,14 +474,18 @@ export default function Modal({
                         <label className="text-[12px] text-white">
                           Valor Final
                         </label>
-                        <input
+                        <NumericFormat
                           id="finalPrice"
                           name="finalPrice"
-                          type="number"
-                          className="w-full rounded border border-white bg-black p-2 text-white"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          prefix="R$ "
+                          decimalScale={2}
+                          fixedDecimalScale
+                          allowNegative={false}
+                          className="w-full cursor-not-allowed rounded border border-white bg-gray-900 p-2 text-white"
                           value={formik.values.finalPrice}
+                          placeholder="R$ 0,00"
                           disabled
                         />
                         {formik.touched.finalPrice &&
@@ -437,6 +496,7 @@ export default function Modal({
                         ) : null}
                       </div>
                     </div>
+
                     <div className="bg-black px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                       <button
                         type="submit"
