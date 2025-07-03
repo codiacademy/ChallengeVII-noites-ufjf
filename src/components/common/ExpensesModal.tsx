@@ -2,9 +2,21 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Expense } from "@/types/types";
+import { NumericFormat } from "react-number-format";
+import { InputMask } from "@react-input/mask";
+import { parse, isValid, format, parseISO } from "date-fns";
 
 const ExpenseSchema = Yup.object().shape({
-  date: Yup.string().required("A data de vencimento é obrigatória"),
+  date: Yup.string()
+    .required("A data de vencimento é obrigatória")
+    .test(
+      "is-valid-date",
+      "Data inválida. Por favor, insira uma data válida no formato dd/mm/aaaa.",
+      (value) => {
+        const parsedDate = parse(value, "dd/MM/yyyy", new Date());
+        return isValid(parsedDate);
+      }
+    ),
   description: Yup.string()
     .required("A descrição é obrigatória")
     .max(50, "Limite máximo de 50 caracteres"),
@@ -36,7 +48,7 @@ export default function ExpensesModal({
 }: ModalProps) {
   const formik = useFormik({
     initialValues: {
-      date: expense?.date || "",
+      date: expense ? format(parseISO(expense.date), "dd/MM/yyyy") : "",
       description: expense?.description || "",
       category: expense?.category || "",
       value: expense?.value || 0,
@@ -45,9 +57,12 @@ export default function ExpensesModal({
     validationSchema: ExpenseSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
+      const parsedDate = parse(values.date, "dd/MM/yyyy", new Date());
+      const dateString = format(parsedDate, "yyyy-MM-dd");
       const newExpense: Expense = {
+        ...values,
         id: expense?.id || Date.now(),
-        date: values.date,
+        date: dateString,
         description: values.description,
         createdAt: new Date().toISOString().split("T")[0],
         category: values.category as "Fixa" | "Variavel",
@@ -60,6 +75,11 @@ export default function ExpensesModal({
     },
   });
 
+  const handleCurrencyChange =
+    (field: string) => (values: { floatValue?: number }) => {
+      formik.setFieldValue(field, values.floatValue || 0);
+    };
+
   return (
     <Dialog open={open} onClose={onClose} className="relative z-30">
       <DialogBackdrop
@@ -71,10 +91,10 @@ export default function ExpensesModal({
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <DialogPanel
             transition
-            className="relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
+            className="relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 data-closed:sm:translate-y-0 data-closed:sm:scale-95"
           >
-            <div className="bg-black px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <div className="sm:flex sm:items-start">
+            <div className="bg-black flex items-center justify-center px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-center">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <h1 className="text-emerald-600">{title}</h1>
                   <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -82,10 +102,12 @@ export default function ExpensesModal({
                       <label className="text-[12px] text-white">
                         Data de Vencimento
                       </label>
-                      <input
+                      <InputMask
+                        mask="dd/mm/yyyy"
+                        replacement={{ d: /\d/, m: /\d/, y: /\d/ }}
+                        placeholder="dd/mm/aaaa"
                         id="date"
                         name="date"
-                        type="date"
                         className="w-full rounded border border-white bg-black p-2 text-white"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -110,6 +132,7 @@ export default function ExpensesModal({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.description}
+                        placeholder="Digite a descrição..."
                       />
                       {formik.touched.description &&
                       formik.errors.description ? (
@@ -146,15 +169,20 @@ export default function ExpensesModal({
 
                     <div className="items-start justify-evenly gap-2">
                       <label className="text-[12px] text-white">Valor</label>
-                      <input
+                      <NumericFormat
                         id="value"
                         name="value"
-                        type="number"
-                        step="0.01"
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        prefix="R$ "
+                        decimalScale={2}
+                        fixedDecimalScale
+                        allowNegative={false}
                         className="w-full rounded border border-white bg-black p-2 text-white"
-                        onChange={formik.handleChange}
+                        onValueChange={handleCurrencyChange("value")}
                         onBlur={formik.handleBlur}
                         value={formik.values.value}
+                        placeholder="R$ 0,00"
                       />
                       {formik.touched.value && formik.errors.value ? (
                         <div className="text-red-500 text-xs">
