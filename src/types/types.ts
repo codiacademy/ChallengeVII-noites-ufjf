@@ -57,5 +57,6 @@ export type TimeRange =
   | "thisMonth"
   | "lastThreeMonths"
   | "thisYear"
-  | "all";
+  | "all"
+  | { type: "custom"; startDate: Date; endDate: Date }
 
