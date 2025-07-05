@@ -17,6 +17,8 @@ import { filterExpensesByTime } from "../utils/expenseAggregations";
 import { TimeRange, Expense } from "../types/types";
 import { ExpensesTypesPie } from "@/components/expenses/ExpensesTypesPie";
 import ExpensesModal from "@/components/common/ExpensesModal";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export function ExpensesPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>("all");
@@ -34,6 +36,7 @@ export function ExpensesPage() {
     } else {
       setExpenses([...expenses, newExpense]);
     }
+    toast.success("Despesa salva com sucesso!", { theme: "dark" });
   };
 
   const handleDeleteExpense = (id: number) => {
@@ -149,6 +152,7 @@ export function ExpensesPage() {
         onSave={handleSaveExpense}
         expense={selectedExpense}
       />
+      <ToastContainer />
     </div>
   );
 }
