@@ -27,21 +27,26 @@ export const filterExpensesByTime = (
   let startDate: Date;
   let endDate = today;
 
-  switch (filter) {
-    case "lastWeek":
-      startDate = subWeeks(today, 1); // 7 dias atrás
-      break;
-    case "thisMonth":
-      startDate = startOfMonth(today); // Início do mês atual
-      break;
-    case "lastThreeMonths":
-      startDate = subMonths(today, 3); // 3 meses atrás
-      break;
-    case "thisYear":
-      startDate = startOfYear(today); // Início do ano atual
-      break;
-    default:
-      return expenses;
+  if (typeof filter === "object" && filter.type === "custom") {
+    startDate = filter.startDate;
+    endDate = filter.endDate;
+  } else {
+    switch (filter) {
+      case "lastWeek":
+        startDate = subWeeks(today, 1); // 7 dias atrás
+        break;
+      case "thisMonth":
+        startDate = startOfMonth(today); // Início do mês atual
+        break;
+      case "lastThreeMonths":
+        startDate = subMonths(today, 3); // 3 meses atrás
+        break;
+      case "thisYear":
+        startDate = startOfYear(today); // Início do ano atual
+        break;
+      default:
+        return expenses;
+    }
   }
 
   return expenses.filter((expense) => {
@@ -132,7 +137,6 @@ export const getExpensesTypesData = (
     },
     { fixas: 0, variaveis: 0 }
   );
-  
 
   // Retornar um array com um único objeto
   return [totals];

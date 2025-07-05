@@ -26,21 +26,26 @@ export const filterSalesByTime = (
   let startDate: Date;
   let endDate = today;
 
-  switch (filter) {
-    case "lastWeek":
-      startDate = subWeeks(today, 1);
-      break;
-    case "thisMonth":
-      startDate = startOfMonth(today);
-      break;
-    case "lastThreeMonths":
-      startDate = subMonths(today, 3);
-      break;
-    case "thisYear":
-      startDate = startOfYear(today);
-      break;
-    default:
-      return sales;
+  if (typeof filter === "object" && filter.type === "custom") {
+    startDate = filter.startDate;
+    endDate = filter.endDate;
+  } else {
+    switch (filter) {
+      case "lastWeek":
+        startDate = subWeeks(today, 1);
+        break;
+      case "thisMonth":
+        startDate = startOfMonth(today);
+        break;
+      case "lastThreeMonths":
+        startDate = subMonths(today, 3);
+        break;
+      case "thisYear":
+        startDate = startOfYear(today);
+        break;
+      default:
+        return sales;
+    }
   }
 
   return sales.filter((sale) => {

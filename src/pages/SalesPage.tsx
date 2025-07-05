@@ -12,6 +12,8 @@ import { TimeRange, Sales } from "@/types/types";
 import { filterSalesByTime } from "@/utils/salesAggregations";
 import { salesData } from "@/data/SalesData";
 import Modal from "@/components/common/SalesModal";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export function SalesPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>("all");
@@ -28,6 +30,7 @@ export function SalesPage() {
       // Adicionar nova venda
       setSales([...sales, newSale]);
     }
+    toast.success("Venda salva com sucesso!", { theme: "dark" });
   };
 
   // Função para excluir uma venda
@@ -135,6 +138,8 @@ export function SalesPage() {
         onSave={handleSaveSale} // Passa a função de salvamento
         sale={selectedSale} // Passa a venda selecionada para edição
       />
+
+      <ToastContainer />
     </div>
   );
 }
