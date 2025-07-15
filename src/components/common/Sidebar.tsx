@@ -42,7 +42,7 @@ const MAIN_ITEMS: SidebarItem[] = [
 
 const BOTTOM_ITEMS: SidebarItem[] = [
   {
-    name: "Settings",
+    name: "Configurações",
     icon: Settings,
     color: "#6ee7b7",
     href: "/settings",

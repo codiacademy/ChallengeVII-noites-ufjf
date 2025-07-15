@@ -4,6 +4,7 @@ import { useState } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { ptBR } from "date-fns/locale";
 
 interface TimeRangeSelectProps {
   selectedTimeRange: TimeRange;
@@ -67,6 +68,9 @@ export const TimeRangeSelect = ({
             moveRangeOnFirstSelection={false}
             ranges={[dateRange]}
             className="date-range"
+            dateDisplayFormat="dd/MM/yyyy"
+            
+            locale={ptBR}
           />
           <div className="flex justify-end space-x-2 mt-2">
             <button
