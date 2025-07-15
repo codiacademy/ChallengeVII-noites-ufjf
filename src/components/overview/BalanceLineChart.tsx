@@ -64,14 +64,14 @@ export const BalanceLineChart = ({ timeRange }: BalanceLineChartProps) => {
                   dataKey="receitas"
                   stroke="#10B981"
                   fill="#10B981"
-                  fillOpacity={0.3}
+                  fillOpacity={0.7}
                 />
                 <Area
                   type="monotone"
                   dataKey="despesas"
                   stroke="#c42121"
                   fill="#c42121"
-                  fillOpacity={0.3}
+                  fillOpacity={0.8}
                 />
                 <Legend />
               </AreaChart>
