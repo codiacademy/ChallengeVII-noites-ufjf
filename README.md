@@ -83,4 +83,4 @@ Este projeto é apenas para fins educacionais no Challenge VII - Codi Academy.
 
 ## 👨‍💻 Autoria
 
-Desenvolvido por [Cauan Lagrotta](https://www.linkedin.com/in/cauan-silva-lagrotta/), [Mariana Carminate](https://www.linkedin.com/in/mariana-santos-carminate-0a0893133/), [Fabiano Andrade](https://www.linkedin.com/in/fabiano-andrade-13118475/) para o Challenge VII - Codi Academy.
+Desenvolvido por [Cauan Lagrotta](https://www.linkedin.com/in/cauan-silva-lagrotta/), [Mariana Carminate](https://www.linkedin.com/in/mariana-santos-carminate-0a0893133/), [Fabiano Andrade](https://www.linkedin.com/in/fabiano-andrade-13118475/), [Pedro Claret](https://www.linkedin.com/in/pedroclaret/) para o Challenge VII - Codi Academy.
